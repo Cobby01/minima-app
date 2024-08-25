@@ -30,10 +30,8 @@ class MyProductTile extends StatelessWidget {
             onPressed: () {
               //pop dialog box
               Navigator.pop(context);
-
               // add to cart
               context.read<Shop>().addToCart(product);
-
             },
             child: Text("Yes"),
           ),

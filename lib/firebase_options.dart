@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'minimal-social-app-f099c.appspot.com',
     iosBundleId: 'com.example.minimalSocialApp',
   );
+
 }

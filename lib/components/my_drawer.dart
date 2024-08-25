@@ -43,6 +43,24 @@ void logout() {
             },
           ),
         ),
+        // map tile
+        Padding(
+          padding: const EdgeInsets.only(left: 25.0),
+          child: ListTile(
+            leading: Icon(
+              Icons.map,
+              color: Theme.of(context).colorScheme.inversePrimary,
+            ),
+            title: const Text("M A P"),
+            onTap: () {
+              // this is already the home so just pop drawer
+              Navigator.pop(context);
+
+             // navigate to the list page
+              Navigator.pushNamed(context, '/map_page');
+            },
+          ),
+        ),
 
         // alert tile
          Padding(
@@ -64,7 +82,7 @@ void logout() {
         ),
 
         // list tile
-                Padding(
+       Padding(
           padding: const EdgeInsets.only(left: 25.0),
           child: ListTile(
             leading: Icon(

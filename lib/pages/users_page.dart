@@ -1,95 +1,137 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:minimal_social_app/components/my_text_box.dart';
 
-// class UsersPage extends StatelessWidget {
-//   const UsersPage ({super.key});
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Users Page'),
-//         centerTitle: true,
-//         backgroundColor:  Theme.of(context).colorScheme.inversePrimary,
-//         foregroundColor:   Theme.of(context).colorScheme.primary,
-//       ),
-//       body: const Padding(
-//         padding: EdgeInsets.all(16.0),
-//         child: Column(
-//           children: [
-//             CircleAvatar(
-//               radius: 50,
-//               backgroundImage: AssetImage('assets/logo/Track it.png'),// add your profile image here
-//             ),
-//             SizedBox(height: 16),
-//             Text(
-//               'Cobby',
-//               style: TextStyle(
-//                 fontSize: 24,
-//                 fontWeight: FontWeight.bold,
-//               ),
-//             ),
-//            SizedBox(height: 16),
-//            Text(
-//             'cobby@gmail.com',
-//             style: TextStyle(
-//               fontSize: 16,
-//               fontWeight: FontWeight.normal,
-//             ),
-//            ),
-//            SizedBox(height: 24),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 
-class UsersPage extends StatelessWidget {
+class UsersPage extends StatefulWidget {
+  const UsersPage({super.key});
+
+  @override
+  State<UsersPage> createState() => _UsersPageState();
+}
+
+class _UsersPageState extends State<UsersPage> {
+    
+    // user
+    final currentUser = FirebaseAuth.instance.currentUser!;
+    // all users
+    final userCollection = FirebaseFirestore.instance.collection('Users');
+
+    // edit field
+    Future<void> editField(String field) async{
+      String newValue = "";
+      await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: Colors.grey[900],
+          title: Text('Edit$field',
+          style: const TextStyle(color: Colors.white),
+          ),
+          content: TextField(
+            autofocus: true,
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              hintText: 'Enter new $field',
+              hintStyle: TextStyle(color: Colors.grey),
+            ),
+            onChanged: (value) {
+              newValue = value;
+            },
+          ),
+          actions: [
+            // cancel button
+            TextButton(
+              child: Text('Cancel', style: TextStyle(color: Colors.white),),
+              onPressed: () => Navigator.of(context).pop(newValue),
+            ),
+
+            // save button
+              TextButton(
+              child: Text('Save',
+               style: TextStyle(color: Colors.white),),
+              onPressed: () => Navigator.pop(context),
+            )
+          ]
+        ),
+      );
+
+      // update in the firestore
+      if(newValue.trim().length > 0){
+        // only update if there is something in the textfield
+        await userCollection.doc(currentUser.uid).update({field: newValue});
+      }
+    }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
-        backgroundColor: Colors.blue,
+        title: Text(''),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const CircleAvatar(
-              radius: 60,
-              backgroundImage: AssetImage('assets/logo/Track it.png'),
+
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance.collection('Users').doc(currentUser.uid).snapshots(),
+        builder: (context, snapshot) {
+          // get user data
+          if (snapshot.hasData){
+            final userData = snapshot.data!.data() as Map<String, dynamic>;
+
+            return ListView(
+        children: [
+          const SizedBox(height: 30,),
+
+          // profile pic
+          const Icon(Icons.person,
+          size: 72,
+          ),
+
+          const SizedBox(height: 10,), 
+
+          // user email
+          Text(
+            currentUser.email!,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.grey[700]),
             ),
-            SizedBox(height: 20),
-            Text(
-              'John Doe',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+          
+          const SizedBox(height: 30,),
+
+          // user details
+          Padding(
+            padding: const EdgeInsets.only(left:25.0),
+            child: Text(
+              'My Details',
+              style: TextStyle(color: Colors.grey[600]),
               ),
+          ),
+
+          // username
+           MyTextBox(
+            text: userData['username'],
+             sectionName: 'Username',
+             onPressed: () => editField('username'),
+             ),
+
+          // bio
+            MyTextBox(
+            text: userData['bio'],
+             sectionName: 'bio',
+             onPressed: () => editField('bio'),
+             ),
+        ],
+      );
+
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error${snapshot.error}'
             ),
-            SizedBox(height: 10),
-            Text(
-              'john.doe@example.com',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: () {
-                // Navigate to edit profile page
-              },
-              icon: Icon(Icons.edit),
-              label: Text('Edit Profile'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-              ),
-            ),
-          ],
+            );
+
+          }
+          return const Center(child: CircularProgressIndicator(),);
+        },
         ),
-      ),
+      
     );
   }
 }
