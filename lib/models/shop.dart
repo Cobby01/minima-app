@@ -34,7 +34,7 @@ class Shop extends ChangeNotifier {
   ];
 
   //user cart
-  List<Product> _cart = [];
+  final List<Product> _cart = [];
 
   // get product list
   List<Product> get shop => _shop;

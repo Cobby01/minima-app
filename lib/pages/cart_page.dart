@@ -59,7 +59,7 @@ class CartPage extends StatelessWidget {
         backgroundColor:  Theme.of(context).colorScheme.inversePrimary,
         foregroundColor:   Theme.of(context).colorScheme.primary,
       ),
-    backgroundColor:  Theme.of(context).colorScheme.background,
+    backgroundColor:  Theme.of(context).colorScheme.surface,
     body: Column(
       children: [
 

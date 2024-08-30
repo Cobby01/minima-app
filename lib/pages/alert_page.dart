@@ -7,14 +7,14 @@ class AlertPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Alert Page'),
+        title: const Text('Alert Page'),
         centerTitle: true,
         backgroundColor:  Theme.of(context).colorScheme.inversePrimary,
         foregroundColor:   Theme.of(context).colorScheme.primary,
         elevation: 0,
       ),
-      drawer: MyDrawer(),
-      body: Center(
+      drawer: const MyDrawer(),
+      body: const Center(
         child: Text('This is the Alert Page'),
       ),
     );

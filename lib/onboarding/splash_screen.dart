@@ -16,14 +16,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _navigateToAuthPage() async{
-    await Future.delayed(Duration(seconds: 5),(){});
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AuthPage()));
+    await Future.delayed(const Duration(seconds: 5),(){});
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AuthPage()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 47, 122, 208),
+      backgroundColor: const Color.fromARGB(255, 47, 122, 208),
       body: Container(
         child: Center(
           child: Image.asset(

@@ -30,10 +30,10 @@ class _UsersPageState extends State<UsersPage> {
           ),
           content: TextField(
             autofocus: true,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               hintText: 'Enter new $field',
-              hintStyle: TextStyle(color: Colors.grey),
+              hintStyle: const TextStyle(color: Colors.grey),
             ),
             onChanged: (value) {
               newValue = value;
@@ -42,13 +42,13 @@ class _UsersPageState extends State<UsersPage> {
           actions: [
             // cancel button
             TextButton(
-              child: Text('Cancel', style: TextStyle(color: Colors.white),),
+              child: const Text('Cancel', style: TextStyle(color: Colors.white),),
               onPressed: () => Navigator.of(context).pop(newValue),
             ),
 
             // save button
               TextButton(
-              child: Text('Save',
+              child: const Text('Save',
                style: TextStyle(color: Colors.white),),
               onPressed: () => Navigator.pop(context),
             )
@@ -57,7 +57,7 @@ class _UsersPageState extends State<UsersPage> {
       );
 
       // update in the firestore
-      if(newValue.trim().length > 0){
+      if(newValue.trim().isNotEmpty){
         // only update if there is something in the textfield
         await userCollection.doc(currentUser.uid).update({field: newValue});
       }
@@ -67,7 +67,7 @@ class _UsersPageState extends State<UsersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(''),
+        title: const Text(''),
       ),
 
       body: StreamBuilder<DocumentSnapshot>(

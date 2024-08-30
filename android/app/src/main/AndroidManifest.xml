@@ -1,5 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 package="com.example.minimal_social_app">
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:networkSecurityConfig="@xml/network_security_config"
         android:label="minimal_social_app"
@@ -8,6 +12,9 @@ package="com.example.minimal_social_app">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCEdwzUPgo9oac3GOE4t2vq1yN0RsKgp_M"/> 
+            <meta-data
+            android:name="io.flutter.embedding.android.EnableDartExecutorService"
+            android:value="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
